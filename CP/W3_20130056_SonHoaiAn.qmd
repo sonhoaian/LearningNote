@@ -156,8 +156,9 @@ print(res)
 
 ## Runge - Kutta Methods
 
-### Runggu - Kuta 1
-### Euler Enhanced Metho-
+### Runggu - Kuta 1 (Euler's method)
 ### Rungu - Kuta 2
+#### Midpoint method
+#### Euler Enhanced Method
 ### Rungu - Kuta 3
 ### Rungu - Kuta 4
