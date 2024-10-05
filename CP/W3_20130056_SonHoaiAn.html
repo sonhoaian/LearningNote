@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>w3_20130056_sonhoaian</title>
+<title>Sơn Hoài Ân - 20130056</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -74,7 +108,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Initial-Value Problems for ODEs</h1>
+<h1 class="title">Sơn Hoài Ân - 20130056</h1>
 </div>
 
 
@@ -91,82 +125,100 @@ window.Quarto = {
 </header>
 
 
+<section id="initial-value-problems-for-odes" class="level1">
+<h1>Initial-Value Problems for ODEs</h1>
 <section id="eulers-method" class="level2">
 <h2 class="anchored" data-anchor-id="eulers-method">Euler’s method</h2>
 <ol type="1">
-<li><p>Theory<br>
-This method gives us the way to calculate the integral of a function on an interval A = [a, b] by sum of all values of the function at each points on the interval. The points must be satisfied the distance between each points and insider the interval.</p></li>
-<li><p>Algorithms<br>
-</p>
-<pre><code> ```{pseudo}
- FUNCTION EulerMethod(f, lower, upper, y0, step ):
-     # set value to function processing
-     x = lower
+<li><p>Theory This method gives us the way to calculate the integral of a function on an interval A = [a, b] by sum of all values of the function at each points on the interval. The points must be satisfied the distance between each points and insider the interval.</p></li>
+<li><p>Algorithms</p></li>
+</ol>
+<pre class="{pseudo}"><code>FUNCTION EulerMethod(f, lower, upper, y0, step ):
+    # set value to function processing
+    x = lower
 
-     # value of a function at an initial point
-     y = y0
+    # value of a function at an initial point
+    y = y0
+    
+    # calculate length of step
+    step_len = abs(upper - lower)/step
 
-     # calculate length of step
-     step_len = abs(upper - lower)/step
+    # Loop over the number of steps
+    FOR i FROM 0 TO n-1 DO:
+        # Update y using Euler's formula
+        y = y + step_len * f(x, y)
+        
+        # Update x
+        x = x + step_len
 
-     # Loop over the number of steps
-     FOR i FROM 0 TO n-1 DO:
-         # Update y using Euler's formula
-         y = y + step_len * f(x, y)
-
-         # Update x
-         x = x + step_len
-
-     #return the result of y
- RETURN y 
- ```</code></pre>
-<p>If you want to return the series of results, you can modify the function above to get them all</p></li>
-<li><p>Practice</p>
-<p>::: {#0fed1f93 .cell execution_count=1} ``` {.python .cell-code} def EulerMethod(func, lower, upper, seed, step): x = lower y = seed</p>
-<pre><code> # length of step
- step_len = abs(lower - upper)/step
-
- # Loop and take sum of function values
- for i in range(step):
-     # update the result
-     y = y + step_len*func(x, y)
-
-     # re-assign x
-     x += step_len
-
- return y</code></pre>
-<p>``` :::</p></li>
-<li><p>Trials run<br>
-</p>
-<p>We will try to evaluate the function <span class="math inline">\(f(x) =  x^2 + 5\)</span> on the interval <strong>[2, 4]</strong> with 50 steps</p>
-<p>::: {#c1a18243 .cell execution_count=2} ``` {.python .cell-code} def EulerMethod(func, seed, lower, upper, step): x = lower y = seed</p>
-<pre><code> # Loop and take sum of function values
- while x &lt;= upper:
-     # update the result
-     y = y + step*func(x)
-
-     # re-assign x
-     x = x + step
-
- return y</code></pre>
-<p>f = lambda x: x**2 + 5 a = 2 b = 4 stp = 0.001 int_val = 0.0</p>
-<p>res = EulerMethod(f, int_val, a, b, stp)</p>
-<p>print(f”The result of f(x) = x^2 + 5 is {res: 5.5f}“) ```</p>
-<p>::: {.cell-output .cell-output-stdout} <code>The result of f(x) = x^2 + 5 is  28.68167</code> ::: :::</p>
-<p>For this code above for the function <span class="math inline">\(f(x) = x^2 + 5\)</span>, the program will be calculate the sum of function <span class="math inline">\(f(x)\)</span> from 2 to 4 with the initial value of zero (0) ## Higher - Order Taylor Methods</p></li>
+    #return the result of y
+RETURN y </code></pre>
+<pre><code>If you want to return the series of results, you can modify the  function  above to get them all</code></pre>
+<ol start="3" type="1">
+<li>Practice<br>
+</li>
+</ol>
+<div id="d88c9358" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EulerMethod(func, lower, upper, seed, step):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> lower</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> seed</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># length of step</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    step_len <span class="op">=</span> <span class="bu">abs</span>(lower <span class="op">-</span> upper)<span class="op">/</span>step</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop and take sum of function values</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(step):</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># update the result</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> y <span class="op">+</span> step_len<span class="op">*</span>func(x, y)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># re-assign x</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        x <span class="op">+=</span> step_len</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="4" type="1">
+<li><p>Trials run</p>
+<p>We will try to evaluate the function <span class="math inline">\(f(x) =  x^2 + 5\)</span> on the interval <strong>[2, 4]</strong> with 50 steps</p></li>
+</ol>
+<div id="1ef1b452" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EulerMethod(func, seed, lower, upper, step):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> lower</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> seed</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop and take sum of function values</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> x <span class="op">&lt;=</span> upper:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># update the result</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> y <span class="op">+</span> step<span class="op">*</span>func(x)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># re-assign x</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> x <span class="op">+</span> step</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="kw">lambda</span> x: x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">5</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>stp <span class="op">=</span> <span class="fl">0.001</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>int_val <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> EulerMethod(f, int_val, a, b, stp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For this code above for the function <span class="math inline">\(f(x) = x^2 + 5\)</span>, the program will be calculate the sum of function <span class="math inline">\(f(x)\)</span> from 2 to 4 with the initial value of zero (0) ## Higher - Order Taylor Methods</p>
+<ol type="1">
 <li><p>Theory<br>
 </p>
 <p>The Higher - order Taylor method is a nummerical method which is used to solve ODE by using approximation solutions based on Taylor’s series. This method can provide better results and more accuracy when comparing to the lower - order methods as the Euler’s method and its variations, etc.</p></li>
 <li><p>Algorithms<br>
 </p>
-<p>When using this method, we need to use the corresponding higher order of derivatives. In the psuedo below, we will try to see the second order Taylor method.</p>
+<p>When using this method, we need to use the corresponding higher order of derivatives. In the psuedo below, we will try to see the second order Taylor method.</p></li>
+</ol>
 <pre class="{pseudo}"><code>FUNCTION f(x)
 
 FUNCTION f_second_diff(x)
     RETURN DIFF(f(x))
 
 FUNCTION taylor_2nd(func, initial_val, lower, upper, step_len):
-
+    
     ASSIGN:
         x = lover
         h = step_len
@@ -177,13 +229,47 @@ FUNCTION taylor_2nd(func, initial_val, lower, upper, step_len):
         y = y + h*f(x) + (h^2/2)*f_second_diff(f(x))
         x += h
     WHILE(x &lt;= upper)
-
+    
 DISPLAY:
     PRINT("The integration of the function y' = f(x) on the interval [lower, upper] is "y)</code></pre>
-<p>In the algorithms above, the function will be calculate the second derivate of y via y’ = f(x) then doing the calulation of the Taylor series over and over in the inteval of [a, b] to get the result of an integration of y’</p></li>
-<li><p>Practice<br>
-</p></li>
+<pre><code>$\hspace{10pt}$ In the algorithms above, the function will be calculate the second derivate of y via y' = f(x) then doing the calulation of the Taylor series over and over in the inteval of [a, b] to get the result of an integration of y'</code></pre>
+<ol start="3" type="1">
+<li>Practice<br>
+</li>
 </ol>
+<div id="2b01c53c" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sp</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># declare function</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sp.symbols(<span class="st">'x'</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">5</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>f_prime <span class="op">=</span> sp.diff(f, x)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># declare variable for calculation</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>step_len <span class="op">=</span> <span class="fl">0.001</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="dv">0</span> <span class="co"># initial value</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Higher Order methods Function (2nd order)</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Taylor2ndOrder(func, initial_val, lower, upper, distance):</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    x0 <span class="op">=</span> lower</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    f_prime <span class="op">=</span> sp.diff(func, x)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> initial_val</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> (x0 <span class="op">&lt;=</span> upper):</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> y <span class="op">+</span> distance<span class="op">*</span>func.subs(x, x0) <span class="op">+</span> (distance<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="dv">2</span>)<span class="op">*</span>f_prime.subs(x, x0)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        x0 <span class="op">+=</span> distance</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> Taylor2ndOrder(f, y, a, b, step_len)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>28.6876699999985</code></pre>
+</div>
+</div>
 </section>
 <section id="runge---kutta-methods" class="level2">
 <h2 class="anchored" data-anchor-id="runge---kutta-methods">Runge - Kutta Methods</h2>
@@ -201,6 +287,7 @@ DISPLAY:
 </section>
 <section id="rungu---kuta-4" class="level3">
 <h3 class="anchored" data-anchor-id="rungu---kuta-4">Rungu - Kuta 4</h3>
+</section>
 </section>
 </section>
 
