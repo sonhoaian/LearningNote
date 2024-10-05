@@ -155,7 +155,7 @@ print(res)
 ```
 
 ## Runge - Kutta Methods
-
+In this section, we will cover Runge-Kutta Methods. If we have a quick look on previous methods, this may be include some of them. The first kind of Runge-Kutta methods is exactly the Euler's method. 
 ### Runggu - Kuta 1 (Euler's method)
 ### Rungu - Kuta 2
 #### Midpoint method
