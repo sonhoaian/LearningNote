@@ -1,6 +1,6 @@
 ---
 title: "Sơn Hoài Ân - 20130056"
-format: html
+format: pdf
 ---
 
 # Initial-Value Problems for ODEs
@@ -117,7 +117,7 @@ FUNCTION taylor_2nd(func, initial_val, lower, upper, step_len):
     WHILE(x <= upper)
     
 DISPLAY:
-    PRINT("The integration of the function y' = f(x) on the interval [lower, upper] is "y)
+    PRINT(RES)
 ```
 
     $\hspace{10pt}$ In the algorithms above, the function will be calculate the second derivate of y via y' = f(x) then doing the calulation of the Taylor series over and over in the inteval of [a, b] to get the result of an integration of y'
@@ -155,10 +155,412 @@ print(res)
 ```
 
 ## Runge - Kutta Methods
-In this section, we will cover Runge-Kutta Methods. If we have a quick look on previous methods, this may be include some of them. The first kind of Runge-Kutta methods is exactly the Euler's method. 
-### Runggu - Kuta 1 (Euler's method)
+
+In this section, we will cover Runge-Kutta Methods. If we have a quick look on previous methods, this may be include some of them. The first kind of Runge-Kutta methods is exactly the Euler's method. Now, we try to implement and get to know the three other kinds of the Runge-Kutta methods.
+
 ### Rungu - Kuta 2
+
+This section we will try to explore two variations of the Runge-Kutta. The first one is the Midpoind method and the Euler enhanced method. Both of them are replied on the traditional Runge-Kutta method.
+
 #### Midpoint method
+
+In this kinds of Runge-Kutta, we will try to evaluate the integral of a function $y' = f(x_1, x_2,..., x_n)$.
+
+1. Theory
+
+Assume that the funtion y' = F(x, y) is continous on the interval $[a, b]$, and n is a small distance between the 2-nearest point in the interval - n will be defined by $n = k \frac{|b - a|}{\text{number of sub-intervals}}$; Beside that, we have $m_i$ is the midpoint of $i^{th}$ interval. Then, the fomular to calculate $y'$ on *[a, b]* is given by:
+
+For 1D: 
+
+$$\int_{a}^{b} y' = \sum_{i = 1}^k nf(m_i)$$
+
+For 2D: \
+
+$$\int^a_b y'= \sum_{i = 0}^k y_i $$
+
+with 
+
+$$y_i = y_{i-1} + n F(x_{i-1} + \dfrac{n}{2}, y_{i - 1} + \dfrac{n}{2} F(x_{i - 1}, y_{i - 1}))$$
+ 
+2. Algorithm
+
+From theory, we have psuedo code for this method. However, $F(x,y)$ must be defined correctly according with the give equation of $f(x_1, x_2,...,x_n)$
+
+```{psuedo}
+FUNCTION F(x, y)
+
+# declare variable
+DEFINE:
+    lower 
+    upper
+    initial_val
+    step_len
+
+# Main processing
+# Using while/for loops to iliterate x_i from "lower" to "upper"
+
+FUNCTION MidPoint(func, initial_value, a, b, deltaX):
+
+    ASSIGN:
+        x = a
+        y = initial_value
+
+    DO:
+        y = y + deltaX*F(x + deltaX/2, y + (deltaX/2)*F(x, y))
+        x = x + deltaX
+    WHILE (x <= b)
+
+    RETURN y
+
+RES = MidPoint(F(x, y), initial_value, lower, upper, step_len)
+
+DISPLAY:
+    PRINT(RES)
+```
+
+3. Practice (2D)
+
+The implementation in 2D as below
+
+```{python}
+def MidPoint(func, initial_val, lower, upper, deltaX):
+    
+    x = lower
+    y = initial_val
+
+    while(x <= upper):
+        y = y + deltaX*func(x + deltaX/2, y + (deltaX/2)*func(x, y))
+        x += deltaX
+
+    return y
+```
+
+4. Trial run
+
+Now, here comes an example
+```{python}
+f = lambda x, y = 1: y + x**2 + 5
+a = 2
+b = 4
+y = 9
+step_len = 0.0001
+
+def MidPoint(func, initial_val, lower, upper, deltaX):
+    
+    x = lower
+    y = initial_val
+    z = 0
+
+    while(x <= upper):
+        y = y + deltaX*func(x + deltaX/2, y + (deltaX/2)*func(x, y))
+        x += deltaX
+        z += y*deltaX
+    return y
+
+res = MidPoint(f, y, a, b, step_len)
+print(res)
+```
+
 #### Euler Enhanced Method
-### Rungu - Kuta 3
-### Rungu - Kuta 4
+1. Theory
+
+Based on the Euler's method for calculating on an interval, Heun suggests improvement to this by adding  first-order ordinary differential equations to the original to get better approximation solutions of function of differantial equations. The enhancement is describe as:
+
+$$𝑦_{𝑖+1} = 𝑦_𝑖 + \dfrac{h}{2} \big[𝑓(𝑥_𝑖, 𝑦_𝑖) + 𝑓 (𝑥_{𝑖+1}, 𝑦_𝑖 + ℎ 𝑓(𝑥_𝑖, 𝑦_𝑖)\big]$$
+
+2. Algorithm
+
+The below psuedo is simulating the Euler enhanced method by Heun.
+
+```{psuedo}
+FUNCTION F(x, y)
+
+ASSIGN:
+    y = y0 #initial value
+    a
+    b
+    step_len
+
+FUNCTION ModifiedEuler(F, initial_val, lower, upper, deltaX):
+    INITIALIZE:
+        x = lower
+        y = initial_val
+
+    WHILE (x <= b):
+        k1 = F(x, y)
+        y_pred = y + k1 * deltaX
+        k2 = F(x + deltaX, y_pred)
+        
+        y = y + (k1 + k2) / 2 * deltaX
+        x = x + deltaX
+
+    RETURN y
+```
+The code below will be return the final integeral value of the differential equation. On the next step, we will implement this method using Python.
+
+3. Implementation
+
+The definition of this method in Python shows as below:
+
+```{python}
+def EulerEnhaced(func, initial_val, lower, upper, deltaX):
+
+    # Assign local variable
+    y = initial_val
+    x = lower
+
+    while (x <= upper):
+        y = y + (deltaX /2)* (func(x, y) + func(x + deltaX, y + deltaX*func(x, y)))
+        x += deltaX
+
+    return y
+```
+
+4. Trial run
+
+We will evalute this method to the previous one.
+
+```{python}
+f = lambda x, y = 1: y + x**2 + 5
+
+init_val = 9
+a = 2
+b = 4
+step_len = 0.0001
+
+def EulerEnhaced(func, initial_val, lower, upper, deltaX):
+
+    # Assign local variable
+    y = initial_val
+    x = lower
+
+    while (x <= upper):
+        y = y + (deltaX /2)* (func(x, y) + func(x + deltaX, y + deltaX*func(x, y)))
+        x += deltaX
+
+    return y
+
+res = EulerEnhaced(f, init_val, a, b, step_len)
+print(res)
+```
+
+The Modified Euler Method provides a more accurate approximation of the solution to ODEs compared to the standard Euler method by refining the estimate of the slope. This method can be applied to various problems in science and engineering where such equations arise.
+
+### Rungu - Kuta 3 / 4
+
+Based on the $2^{nd}$-order of Runge-Kutta methods, we can derive the third and fouth order of this method as:
+
+1. Runge-Kutta 3:
+- Method
+
+$$y_0 = \alpha$$
+$$ y_i = y_{i -1} + \dfrac{h}{4}\bigg[F(x_{i - 1}, y_{i - 1}) + 3F \bigg(x_{i - 1} + \dfrac{2h}{3}, y_{i - 1} + \dfrac{2h}{3} F \bigg(x_{i - 1} + \dfrac{h}{3}, y_{i - 1} + \dfrac{h}{3}F(x_{i - 1}, y_{i - 1}) \bigg) \bigg]$$
+
+to simplidy this method for easing control if any issues happens, we will define some temporary variables:
+
+> $k_1 = hF \big(x_{i - 1}, y_{i - 1} \big)$
+
+> $k_2 = hF \big(x_{i - 1} + \dfrac{h}{3}, y_{i - 1} + \dfrac{1}{3} k_1 \big)$
+
+> $k_3 = hF \big(x_{i - 1} + \dfrac{2h}{3}, y_{i-1} + \dfrac{2}{3} k_2 \big)$
+
+> $y_i = y_{i - 1} + \dfrac{1}{4} (k_1 + 3k_3)$
+
+with h is a distance between 2 nearest points on the interval **[a, b]**
+- Algorithm
+
+```{psuedo}
+FUNCTION F(x, y)
+
+ASSIGN:
+    initial_value
+    a, b # the interval
+    step_len
+
+DEFINE RungeKutta3(func, initial_val, lower, upper, deltaX):
+
+    # Define local variable
+    ASSIGN:
+        x = lower
+        y = initial_val
+
+    WHILE (x <= upper):
+        
+        # Calculate k1, k2, k3
+        k1 = deltaX*func(x, y)
+
+        k2 = deltaX*func(x + deltaX / 3, y + k1 / 3)
+
+        k3 = deltaX*func(x + (deltaX * 2) / 3, y + (k2 * 2) / 3)
+
+        y = y + (k1 + 3 * k3) / 4
+        x += deltaX
+
+    RETURN y
+
+RES = RungeKutta3(F(x,y), initial_value, a, b, step_len)
+
+DISPLAY:
+    PRINT(RES)
+```
+- Implement
+
+```{python}
+def RungeKutta3(func, initial_val, lower, upper, deltaX):
+
+    x = lower
+    y = initial_val
+
+    while (x <= upper):
+
+        k1 = deltaX*func(x, y)
+
+        k2 = deltaX*func(x + deltaX / 3, y + k1 / 3)
+
+        k3 = deltaX*func(x + (deltaX * 2) / 3, y + (k2 * 2) / 3)
+
+        y = y + (k1 + 3 * k3) / 4
+
+        x += deltaX
+    
+    return y
+```
+
+- Trial run
+
+```{python}
+f = lambda x, y = 1: y + x**2 + 5
+
+init_val = 9
+a = 2
+b = 4
+step_len = 0.0001
+
+def RungeKutta3(func, initial_val, lower, upper, deltaX):
+
+    x = lower
+    y = initial_val
+
+    while (x <= upper):
+
+        k1 = deltaX*func(x, y)
+
+        k2 = deltaX*func(x + deltaX / 3, y + k1 / 3)
+
+        k3 = deltaX*func(x + (deltaX * 2) / 3, y + (k2 * 2) / 3)
+
+        y = y + (k1 + 3 * k3) / 4
+
+        x += deltaX
+    
+    return y
+
+res = RungeKutta3(f, init_val, a, b, step_len)
+
+print(res)
+```
+2. Runge-Kutta 4
+
+With the same theory of Runge-Kutta 3, we have a definition and algorithm as:
+- Definition:
+$$y_i = y_{i-1} + h \left( \frac{1}{4} F(x_{i-1}, y_{i-1}) + \frac{3}{4} F\left(x_{i-1} + \frac{2h}{3}, y_{i-1} + \frac{2h}{3} F\left(x_{i-1} + \frac{h}{3}, y_{i-1} + \frac{h}{3} F(x_{i-1}, y_{i-1})\right)\right) \right)
+$$
+
+For simplify we calculate: 
+
+> $k_1 = hF(x_{i-1}, y_{i-1})$ 
+
+> $k_2 = hF\left(x_{i-1} + \frac{h}{3}, y_{i-1} + \frac{h}{3} k_1\right)$ 
+
+> $k_3 = hF\left(x_{i-1} + \frac{2h}{3}, y_{i-1} + \frac{2h}{3} k_2\right)$ 
+
+> $k_4 = hF\left(x_{i-1} + h, y_{i-1} + h k_3\right)$ 
+
+> $y_{i} = y_{i-1} + \frac{1}{6} \left( k_1 + 2k_2 + 2k_3 + k_4 \right)$
+
+- Algorithm:
+
+```{psuedo}
+
+FUNCTION F(x, y)
+
+ASSIGN:
+    initial_value
+    a, b # the interval
+    step_len
+
+FUNCTION RungeKutta4(func, init_val, lower, upper, deltaX):
+    ASSIGN:
+        x = lower
+        y = init_val
+
+    WHILE (x <= b):
+
+        # Calculate number of RK4 
+        k1 = deltaX * F(x, y)
+        k2 = deltaX * F(x + (1/2) * deltaX, y + (1/2) * k1 * deltaX)
+        k3 = deltaX * F(x + (1/2) * deltaX, y + (1/2) * k2 * deltaX)
+        k4 = deltaX * F(x + deltaX, y + k3 * deltaX)
+        
+        y = y + (1/6) * (k1 + 2 * k2 + 2 * k3 + k4)
+        x = x + deltaX
+
+    RETURN y
+
+RES = RungeKutta4(F(x,y), initial_value, a, b, step_len)
+
+DISPLAY:
+    PRINT(RES)
+```
+
+- Implement
+
+```{python}
+def RungeKutta4(func, init_val, lower, upper, deltaX):
+
+    x = lower
+    y = init_val
+
+    while (x < upper):
+        # Calculate number of RK4 
+        k1 = deltaX * func(x, y)
+        k2 = deltaX * func(x + (1/2) * deltaX, y + (1/2) * k1 * deltaX)
+        k3 = deltaX * func(x + (1/2) * deltaX, y + (1/2) * k2 * deltaX)
+        k4 = deltaX * func(x + deltaX, y + k3 * deltaX)
+        
+        y = y + (1/6) * (k1 + 2 * k2 + 2 * k3 + k4)
+        x = x + deltaX
+
+    return y
+```
+
+- Trial run
+
+```{python}
+f = lambda x, y = 1: y + x**2 + 5
+
+init_val = 9
+a = 2
+b = 4
+step_len = 0.0001
+
+def RungeKutta4(func, init_val, lower, upper, deltaX):
+
+    x = lower
+    y = init_val
+
+    while (x < upper):
+        # Calculate number of RK4 
+        k1 = deltaX * func(x, y)
+        k2 = deltaX * func(x + (1/2) * deltaX, y + (1/2) * k1 * deltaX)
+        k3 = deltaX * func(x + (1/2) * deltaX, y + (1/2) * k2 * deltaX)
+        k4 = deltaX * func(x + deltaX, y + k3 * deltaX)
+        
+        y = y + (1/6) * (k1 + 2 * k2 + 2 * k3 + k4)
+        x = x + deltaX
+
+    return y
+
+res = RungeKutta4(f, init_val, a, b, step_len)
+print(res)
+```

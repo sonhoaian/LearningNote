@@ -158,7 +158,7 @@ RETURN y </code></pre>
 <li>Practice<br>
 </li>
 </ol>
-<div id="d88c9358" class="cell" data-execution_count="1">
+<div id="48e37fe1" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EulerMethod(func, lower, upper, seed, step):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> lower</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> seed</span>
@@ -180,7 +180,7 @@ RETURN y </code></pre>
 <li><p>Trials run</p>
 <p>We will try to evaluate the function <span class="math inline">\(f(x) =  x^2 + 5\)</span> on the interval <strong>[2, 4]</strong> with 50 steps</p></li>
 </ol>
-<div id="1ef1b452" class="cell" data-execution_count="2">
+<div id="a48d06c1" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EulerMethod(func, seed, lower, upper, step):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> lower</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> seed</span>
@@ -237,7 +237,7 @@ DISPLAY:
 <li>Practice<br>
 </li>
 </ol>
-<div id="2b01c53c" class="cell" data-execution_count="3">
+<div id="a33d848e" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sp</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># declare function</span></span>
@@ -273,20 +273,22 @@ DISPLAY:
 </section>
 <section id="runge---kutta-methods" class="level2">
 <h2 class="anchored" data-anchor-id="runge---kutta-methods">Runge - Kutta Methods</h2>
-<section id="runggu---kuta-1" class="level3">
-<h3 class="anchored" data-anchor-id="runggu---kuta-1">Runggu - Kuta 1</h3>
-</section>
-<section id="euler-enhanced-metho-" class="level3">
-<h3 class="anchored" data-anchor-id="euler-enhanced-metho-">Euler Enhanced Metho-</h3>
-</section>
+<p>In this section, we will cover Runge-Kutta Methods. If we have a quick look on previous methods, this may be include some of them. The first kind of Runge-Kutta methods is exactly the Euler’s method. Now, we try to implement and get to know the three other kinds of the Runge-Kutta methods.</p>
 <section id="rungu---kuta-2" class="level3">
 <h3 class="anchored" data-anchor-id="rungu---kuta-2">Rungu - Kuta 2</h3>
-</section>
-<section id="rungu---kuta-3" class="level3">
-<h3 class="anchored" data-anchor-id="rungu---kuta-3">Rungu - Kuta 3</h3>
-</section>
-<section id="rungu---kuta-4" class="level3">
-<h3 class="anchored" data-anchor-id="rungu---kuta-4">Rungu - Kuta 4</h3>
+<p>This section we will try to explore two variations of the Runge-Kutta. The first one is the Midpoind method and the Euler enhanced method. Both of them are replied on the traditional Runge-Kutta method. #### Midpoint method In this kinds of Runge-Kutta, we will try to evaluate the integral of a function <span class="math inline">\(y' = f(x_1, x_2,..., x_n)\)</span>. 1. Theory Assume that the funtion y’ = F(x, y) is continous on the interval <span class="math inline">\([a, b]\)</span>, and n is a small distance between the 2-nearest point in the interval - n will be defined by $ = k$; Beside that, we have <span class="math inline">\(m_i\)</span> is the midpoint of <span class="math inline">\(i^{th}\)</span> interval. Then, the fomular to calculate <span class="math inline">\(y'\)</span> on <em>[a, b]</em> is given by:</p>
+<p>For 1D:</p>
+<pre><code>$\int_{a}^{b} y' = \sum_{i = 1}^k nf(m_i)$</code></pre>
+<p>For 2D:<br>
+</p>
+<p>$^a_b y’= _{i = 0}^k y_i $</p>
+<p>with</p>
+<p><span class="math inline">\(y_i = y_{i-1} + n F(x_{i-1} + \dfrac{n}{2}, y_{i - 1} + \dfrac{n}{2} F(x_{i - 1}, y_{i - 1}))\)</span></p>
+<ol start="2" type="1">
+<li>Algorithm</li>
+<li>Practice</li>
+<li>Trial run #### Euler Enhanced Method ### Rungu - Kuta 3 ### Rungu - Kuta 4</li>
+</ol>
 </section>
 </section>
 </section>
